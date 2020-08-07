@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>ic_nav_back_n@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="HAPPay" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="1首页-已激活" transform="translate(-278.000000, -346.000000)" stroke="#D9D9D9">
+            <g id="分组" transform="translate(20.000000, 309.000000)">
+                <g id="箭头" transform="translate(268.500000, 48.000000) scale(-1, 1) translate(-268.500000, -48.000000) translate(257.000000, 37.000000)">
+                    <polyline id="Path-2-Copy" transform="translate(14.500000, 10.500000) rotate(-315.000000) translate(-14.500000, -10.500000) " points="9 5 9 16 20 16"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
