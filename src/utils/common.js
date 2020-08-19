@@ -1,5 +1,6 @@
 
 import moment from 'moment';
+import { getStorageAsync } from '@/utils/storage';
 
 /**
  *
@@ -261,4 +262,37 @@ export const formatPhoneNumber = (phoneNumber) => {
 
 export const formatTime = (time, format = 'YYYY/MM/DD HH:mm:ss') => {
 	return moment(time).format(format);
+}
+
+// 判断是否JSON格式string
+export function isJSON(str) {
+	if (typeof str === 'string') {
+		try {
+			var obj = JSON.parse(str);
+			if (typeof obj === 'object' && obj) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (e) {
+			console.log('error：' + str + '!!!' + e);
+			return false;
+		}
+	}
+	return false;
+}
+
+/**
+ * 检测是否为登录状态
+ */
+export const checkIsLogin = async () => {
+	let token = '';
+	try {
+		token = await getStorageAsync('STORAGE_TOKEN')
+	} catch (err) {
+	}
+
+	if (token) return true
+	return false;
 }

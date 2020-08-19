@@ -6,8 +6,13 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native'
+import {connect} from "react-redux";
+import { clearUserInfo } from "@/redux/actions/user_action";
+import { getStorageAsync, removeStorageAsync, clearStorageAsync } from '@/utils/storage';
+import { checkIsLogin } from '@/utils/common'
 
 import IMG_USER_TOP from '@/assets/imgs/img_my_head.png'
 import IC_AVATAR from '@/assets/imgs/img_photo_default.png'
@@ -19,14 +24,12 @@ class Me extends React.PureComponent {
   constructor(props) {
     super(props),
     this.state = {
-      isLogin: false,
-      account: '',
-      password: ''
+      isLogin: props.toten,
     }
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
   }
 
 	async fetchUserInfo() {
@@ -38,20 +41,25 @@ class Me extends React.PureComponent {
 
 
 	listonPressOrderList = () => {
-		if (this.state.isLogin) {
+    // console.log('user::::', this.props.user)
+    // console.log('toten::::', this.props.toten)
+    console.log('state::::', this.props.state)
+		if (this.props.isLogin) {
 		} else {
 			this.showModal()
 		}
 	}
 
 	onPressUpdatePwd = () => {
-		if (this.state.isLogin) {
+    clearStorageAsync()
+		if (this.props.isLogin) {
 		} else {
 			this.showModal()
 		}
 	}
 
-	onPressLogout() {
+	onPressLogout = () => {
+    // const _this = this
     Alert.alert('温馨提示', '确定要退出登录吗？', [
       {
         text: 'Cancel',
@@ -59,8 +67,13 @@ class Me extends React.PureComponent {
         style: 'cancel'
       },
       { text: 'OK', onPress: () => {
-        this.onPressLogin()
-      } }
+        // clearStorageAsync().then(() => {
+        //   this.setState({isLogin: false})
+        // })
+        this.props.clearUserInfo().then(() => {
+          this.setState({isLogin: false})
+        })
+      }}
     ])
   }
 
@@ -75,14 +88,14 @@ class Me extends React.PureComponent {
     ])
 	}
 
-	onPressLogin = () => {
+	onPressLogin = async () => {
     const {navigation} = this.props;
     navigation.navigate('Login');
 	}
 
 
   render() {
-    const { isLogin = false, user = {} } = this.state
+    const { user = {}, isLogin = false} = this.props
     
     return (
       <View style={styles.minepage}>
@@ -94,20 +107,20 @@ class Me extends React.PureComponent {
               <View style={styles.info}>
                 <Text style={styles.nickname}>{user.username || `小西瓜`}</Text>
               </View>
-              <View style={styles.infodesc}>{user.name}</View>
+              <Text style={styles.infodesc}>{user.name}</Text>
             </View>
           </View>
           <View style={styles.listbox}>
-            <View style={[styles.itembox, styles.start]} onPress={this.listonPressOrderList}>
+            <TouchableOpacity style={[styles.itembox, styles.start]} onPress={this.listonPressOrderList}>
               <Image style={styles.icon} source={IC_PROBLEM} />
               <Text style={[styles.desc, styles.flex1]}>订单记录</Text>
               <Image style={styles.icarrow} source={ICON_CHEVRON_ARROW} />
-            </View>
-            <View style={[styles.itembox, styles.end]} onPress={this.onPressUpdatePwd}>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.itembox, styles.end]} onPress={this.onPressUpdatePwd}>
               <Image style={styles.icon} source={IC_ABOUT} />
               <Text style={[styles.desc, styles.flex1]}>修改密码</Text>
               <Image style={styles.icarrow} source={ICON_CHEVRON_ARROW} />
-            </View>
+            </TouchableOpacity>
           </View>
           {isLogin ? 
             <Text title='退出登录' style={styles.btnlogout} onPress={this.onPressLogout}>退出登录</Text> :
@@ -117,6 +130,10 @@ class Me extends React.PureComponent {
     )
   }
 }
+
+const mapStateToProps = state => ({state: state})
+
+export default connect(mapStateToProps, {clearUserInfo})(Me);
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -173,7 +190,6 @@ const styles = StyleSheet.create({
   itembox: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative',
     paddingTop: 14,
     paddingBottom: 14,
     height: 59,
@@ -258,5 +274,3 @@ const styles = StyleSheet.create({
     opacity: 1,
   }
 })
-
-export default Me

@@ -16,8 +16,8 @@ class Input extends React.PureComponent {
       <View style={styles.container}>
         <TextInput
           style={styles.input}
-          onChangeText={handleChange(field.name)}
-          onBlur={handleBlur(field.name)}
+          onChangeText={value => handleChange(value)}
+          onBlur={value => handleBlur(value)}
           {...field}
           {...rest}
         />

@@ -72,7 +72,7 @@ function RootStackScreen() {
         headerStatusBarHeight: StatusBar.currentHeight,
         headerStyle: {
           height: 30,
-          headerTintColor: '#999999',
+          // headerTintColor: '#999999',
           ...Platform.select({
             android: {
               elevation: 0,
